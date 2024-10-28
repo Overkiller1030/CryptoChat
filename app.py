@@ -1,7 +1,9 @@
 ## Controller for CryptoChat
 
 from flask import Flask, render_template, request, redirect, url_for
-from crypto_utils import generateKeyPair, serializePublicKey, deserializePublicKey, getSharedSecret # Utilizes crypto_utils.py
+from crypto_utils import (
+  generateKeyPair, serializePublicKey, deserializePublicKey, 
+  getSharedSecret, encryptMessage, decryptMessage) # Utilizes crypto_utils.py
 
 app = Flask(__name__) 
 
@@ -19,7 +21,11 @@ def chat():
 def send_message():
   message = request.form.get('message') ## retrieves messages from form in chat.html
   if message:
-    messages.append(message) # stores message in temporary array
+
+    # THIS IS WHERE WE ENCRYPT THE MESSAGE!!!#
+    iv, ciphertext, tag = encryptMessage(sharedSecret, message)
+    messages.append(iv, ciphertext, tag) # stroes encrypted message, along with iv and tag, in array as a tuple
+    
   return redirect(url_for('chat'))
 
 if __name__ == '__main__': ## used if file is run directly
