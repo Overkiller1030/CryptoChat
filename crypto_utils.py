@@ -4,7 +4,7 @@ from cryptography.hazmat.backends import default_backend # Runs the EC math "beh
 from cryptography.hazmat.primitives import serialization # Allows for serialization of keys to bits
 
 def generateKeyPair():
-  privateKey = ec.generate_private_key(ec.SECP384R1, default_backend) # uses the SECP384R1 elliptic curve points and default backend to calculate private keys
+  privateKey = ec.generate_private_key(ec.SECP384R1(), default_backend) # uses the SECP384R1 elliptic curve points and default backend to calculate private keys
   publicKey = privateKey.public_key() # Creates public key from generated private key
   return privateKey, publicKey
 
