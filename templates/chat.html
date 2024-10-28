@@ -10,11 +10,16 @@
 
   <!--Message Display-->
   <div id="message_box" style="border:1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;">
-    
+    <!--Prints all messages in messages array in app.py using a Flask loop-->
+    {% for message in messages %} 
+        <p>{{message}}</p>
+    {% endfor %}
   </div>
 
   <!--Message Input-->
-  <form id="message_form" method="post" action="#">
+  <!--Sends messages in form through POST to /send-->
+  <form id="message_form" method="post" action="/send">
+    <input type="text" name="message" placeholder="Type your message here" required>
     <button type="submit">Send</button>
   </form>
 </body>
