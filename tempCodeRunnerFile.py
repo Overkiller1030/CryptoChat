@@ -1,6 +1,6 @@
 ## Controller for CryptoChat
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from crypto_utils import (
   generateKeyPair, serializePublicKey, deserializePublicKey, 
   getSharedSecret, encryptMessage, decryptMessage) # Utilizes crypto_utils.py
@@ -48,6 +48,11 @@ def send_message():
     messages.append((iv, ciphertext, tag)) # stores encrypted message, along with iv and tag, in array as a tuple
 
   return redirect(url_for('chat'))
+
+@app.route('/messages') # Use JQuery to reload messages
+def get_messages():
+  return jsonify(messages)
+
 
 if __name__ == '__main__': ## used if file is run directly
 
