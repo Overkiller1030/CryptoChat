@@ -3,7 +3,8 @@ from cryptography.hazmat.primitives.asymmetric import ec # imports Elliptic Curv
 from cryptography.hazmat.backends import default_backend # Runs the EC math "behind the scenes"
 from cryptography.hazmat.primitives import serialization # Allows for serialization of keys to bits
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes # AES-GCM encryption/decryption
-from cryptography.hazmat.primitives import HKDF, hashes # Creates encryption key that fits AES-requirements from shared secret (This is HMAC)
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF # Creates encryption key that fits AES-requirements from shared secret (This is HMAC)
+from cryptography.hazmat.primitives import hashes # Used with HKDF
 from cryptography.hazmat.primitives import padding # Padding to fit AES-block size
 import os
 

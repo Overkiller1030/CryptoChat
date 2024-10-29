@@ -11,8 +11,8 @@
   <!--Message Display-->
   <div id="message_box" style="border:1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;">
     <!--Prints all messages in messages array in app.py using a Flask loop-->
-    {% for iv,  ciphertext, tag in messages %} 
-        <p>{{decrypt_message(shared_secret, iv, ciphertext, tag)}}</p>
+    {% for message in messages %} 
+        <p>{{message}}</p>
     {% endfor %}
   </div>
 

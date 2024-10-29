@@ -15,7 +15,12 @@ def home():
 
 @app.route('/chat')
 def chat():
-  return render_template('chat.html', messages = messages) ## passess all messages into the message display
+  decryptedMessages = []
+  for iv, ciphertext, tag in messages: 
+    # Decrypt each message and append to decryptedMessages 
+    plaintext = decryptMessage(sharedSecret1, iv, ciphertext, tag)
+    decryptedMessages.append(plaintext)
+  return render_template('chat.html', messages = decryptedMessages) ## passes all messages into the message display
 
 @app.route('/send', methods=['POST']) ## activated when a message is sent through POST to /send
 def send_message():
@@ -23,9 +28,9 @@ def send_message():
   if message:
 
     # THIS IS WHERE WE ENCRYPT THE MESSAGE!!!#
-    iv, ciphertext, tag = encryptMessage(sharedSecret, message)
-    messages.append(iv, ciphertext, tag) # stroes encrypted message, along with iv and tag, in array as a tuple
-    
+    iv, ciphertext, tag = encryptMessage(sharedSecret1, message)
+    messages.append((iv, ciphertext, tag)) # stores encrypted message, along with iv and tag, in array as a tuple
+
   return redirect(url_for('chat'))
 
 if __name__ == '__main__': ## used if file is run directly
@@ -46,4 +51,6 @@ if __name__ == '__main__': ## used if file is run directly
   assert sharedSecret1 == sharedSecret2, "Shared Secrets are not the same!"
   print("Shared secret established successfully!")
 
-  app.run(debug=True) ## starts server/if website alters, reloads 
+  app.run(host='0.0.0.0', port=500, debug=True) ## starts server
+
+ 
