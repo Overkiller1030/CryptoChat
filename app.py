@@ -52,6 +52,6 @@ def send_message():
   return redirect(url_for('chat'))
 
 if __name__ == '__main__': ## used if file is run directly
-  socketIO.run(host='0.0.0.0', port=5000, debug=True) ## starts server
+  socketIO.run(app, host='0.0.0.0', port=5000, debug=True) ## starts server
 
  
