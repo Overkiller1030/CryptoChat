@@ -34,10 +34,19 @@ def home():
 @app.route('/chat')
 def chat():
   decryptedMessages = []
-  for iv, ciphertext, tag in messages: 
+  for message in messages: 
     # Decrypt each message and append to decryptedMessages 
+    iv = bytes.fromhex(message['iv'])
+    ciphertext = bytes.fromhex(message['ciphertext'])
+    tag = bytes.fromhex(message['tag'])
+
+
     plaintext = decryptMessage(sharedSecret1, iv, ciphertext, tag)
-    decryptedMessages.append(plaintext)
+    decryptedMessages.append({
+      'plaintext: ', plaintext,
+      'ciphertext: ', message['ciphertext']
+
+    })
   return render_template('chat.html', messages = decryptedMessages) ## passes all messages into the message display
 
 @app.route('/send', methods=['POST']) ## activated when a message is sent through POST to /send
