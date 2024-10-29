@@ -48,7 +48,7 @@ def send_message():
     # THIS IS WHERE WE ENCRYPT THE MESSAGE!!!#
     iv, ciphertext, tag = encryptMessage(sharedSecret1, message)
     messages.append((iv, ciphertext, tag)) # stores encrypted message, along with iv and tag, in array as a tuple
-    socketIO.emit('recieve_message', {'message': message})
+    socketIO.emit('receive_message', {'iv': iv.hex(), 'ciphertext': ciphertext.hex(), 'tag': tag.hex()})
   return redirect(url_for('chat'))
 
 if __name__ == '__main__': ## used if file is run directly

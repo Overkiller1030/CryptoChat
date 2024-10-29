@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChatRoom</title>
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('receive_message', function(data) {
+            const messageBox = document.getElementById('message_box');
+            // Create a new paragraph for the incoming message
+            const messageElement = document.createElement('p');
+            messageElement.textContent = `Received: ${data.ciphertext}`; // Displaying ciphertext for now
+            messageBox.appendChild(messageElement);
+            messageBox.scrollTop = messageBox.scrollHeight; // Scroll to the bottom
+        });
+    </script>
 </head>
 <body>
   <h1>Chat Room</h1>
