@@ -1,11 +1,13 @@
 ## Controller for CryptoChat
 
 from flask import Flask, render_template, request, redirect, url_for
+from flask_socketio import SocketIO, emit
 from crypto_utils import (
   generateKeyPair, serializePublicKey, deserializePublicKey, 
   getSharedSecret, encryptMessage, decryptMessage) # Utilizes crypto_utils.py
 
-app = Flask(__name__) 
+app = Flask(__name__)
+socketIO = SocketIO(app)
 
 messages = [] ## stores messsages from chat.html message here temporarily
 
@@ -46,11 +48,10 @@ def send_message():
     # THIS IS WHERE WE ENCRYPT THE MESSAGE!!!#
     iv, ciphertext, tag = encryptMessage(sharedSecret1, message)
     messages.append((iv, ciphertext, tag)) # stores encrypted message, along with iv and tag, in array as a tuple
-
+    socketIO.emit('recieve_message', {'message': message})
   return redirect(url_for('chat'))
 
 if __name__ == '__main__': ## used if file is run directly
-
-  app.run(host='0.0.0.0', port=5000, debug=True) ## starts server
+  socketIO.run(host='0.0.0.0', port=5000, debug=True) ## starts server
 
  
