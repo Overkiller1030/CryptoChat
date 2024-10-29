@@ -1,48 +1,26 @@
-const socket = io();
+document.addEventListener("DOMContentLoaded", () => {
+  const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-// Function to toggle visibility of ciphertext and plaintext
-function toggleVisibility(index) {
-    const plaintextElement = document.getElementById(`plaintext-${index}`);
-    const ciphertextElement = document.getElementById(`ciphertext-${index}`);
-    if (plaintextElement.style.display === 'none') {
-        plaintextElement.style.display = 'block';
-        ciphertextElement.style.display = 'none';
-    } else {
-        plaintextElement.style.display = 'none';
-        ciphertextElement.style.display = 'block';
-    }
-}
+  socket.on('receive_message', function(data) {
+      addMessage(data);
+  });
 
-socket.on('receive_message', function(data) {
-    const messageBox = document.getElementById('message_box');
-    // Create a new div for the incoming message
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message';
+  function addMessage(data) {
+      const messageBox = document.getElementById('message_box');
+      const messageElement = document.createElement('p');
+      messageElement.innerHTML = data.plaintext;
+      messageElement.setAttribute("data-plaintext", data.plaintext);
+      messageElement.setAttribute("data-ciphertext", JSON.stringify(data.ciphertext));
+      messageElement.onclick = toggleCiphertext;
+      messageBox.appendChild(messageElement);
+  }
 
-    // Create elements for plaintext and ciphertext
-    const plaintextElement = document.createElement('p');
-    plaintextElement.id = `plaintext-${data.index}`;
-    plaintextElement.textContent = data.plaintext; // Display plaintext
-    plaintextElement.style.display = 'none'; // Hide plaintext by default
-
-    const ciphertextElement = document.createElement('p');
-    ciphertextElement.id = `ciphertext-${data.index}`;
-    ciphertextElement.textContent = `Ciphertext: ${data.ciphertext}`; // Display ciphertext
-
-    // Create a checkbox to toggle visibility
-    const toggleCheckbox = document.createElement('input');
-    toggleCheckbox.type = 'checkbox';
-    toggleCheckbox.onclick = () => toggleVisibility(data.index);
-    const toggleLabel = document.createElement('label');
-    toggleLabel.textContent = 'Show Plaintext';
-    toggleLabel.style.marginLeft = '5px';
-
-    // Append elements to messageElement
-    messageElement.appendChild(ciphertextElement);
-    messageElement.appendChild(plaintextElement);
-    messageElement.appendChild(toggleCheckbox);
-    messageElement.appendChild(toggleLabel);
-
-    messageBox.appendChild(messageElement);
-    messageBox.scrollTop = messageBox.scrollHeight; // Scroll to the bottom
+  window.toggleCiphertext = function(event) {
+      const messageElement = event.target;
+      if (messageElement.innerHTML === messageElement.dataset.plaintext) {
+          messageElement.innerHTML = messageElement.dataset.ciphertext;
+      } else {
+          messageElement.innerHTML = messageElement.dataset.plaintext;
+      }
+  };
 });

@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatRoom</title>
-  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-  <script src="../static/JavaScript.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatRoom</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="../static/JavaScript.js"></script>
 </head>
 <body>
-  <h1>Chat Room</h1>
+    <h1>Chat Room</h1>
 
-  <!--Message Display-->
-  <div id="message_box" style="border:1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;">
-    <!--Prints all messages in messages array in app.py using a Flask loop-->
-    {% for message in messages %} 
-        <p>{{message}}</p>
-    {% endfor %}
-  </div>
+    <!--Message Display-->
+    <div id="message_box" style="border:1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll;">
+        {% for message in messages %}
+            <p data-plaintext="{{ message.plaintext }}" data-ciphertext="{{ message.ciphertext }}" onclick="toggleCiphertext(event)">
+                {{ message.plaintext }}
+            </p>
+        {% endfor %}
+    </div>
 
-  <!--Message Input-->
-  <!--Sends messages in form through POST to /send-->
-  <form id="message_form" method="post" action="/send">
-    <input type="text" name="message" placeholder="Type your message here" required>
-    <button type="submit">Send</button>
-  </form>
-  <a href="/">Home</a>
+    <!--Message Input-->
+    <form id="message_form" method="post" action="/send">
+        <input type="text" name="message" placeholder="Type your message here" required>
+        <button type="submit">Send</button>
+    </form>
+    <a href="/">Home</a>
 </body>
 </html>
