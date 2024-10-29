@@ -22,5 +22,16 @@
     <input type="text" name="message" placeholder="Type your message here" required>
     <button type="submit">Send</button>
   </form>
+  <script>
+    function getMessages(){
+      $.getJSON('/messages', function(data){
+        $('#messages').empty(); // Clears the message
+        data.forEach(function(message){
+          $('#messages').append('<p>' + message + '</p>') // Adds message to DOM
+        });
+      });
+    }
+    setInterval(getMessages, 2000);
+  </script>
 </body>
 </html>
