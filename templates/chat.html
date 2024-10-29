@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChatRoom</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <h1>Chat Room</h1>
@@ -23,16 +22,5 @@
     <input type="text" name="message" placeholder="Type your message here" required>
     <button type="submit">Send</button>
   </form>
-  <script>
-    function getMessages(){
-      $.getJSON('/messages', function(data){
-        $('#messages').empty(); // Clears the message
-        data.forEach(function(message){
-          $('#messages').append('<p>' + message + '</p>') // Adds message to DOM
-        });
-      });
-    }
-    setInterval(getMessages, 2000);
-  </script>
 </body>
 </html>
